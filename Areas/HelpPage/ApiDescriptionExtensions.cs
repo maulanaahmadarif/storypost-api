@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace ASP_API.Areas.HelpPage
+namespace ArsipAPI.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

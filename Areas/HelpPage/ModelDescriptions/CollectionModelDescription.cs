@@ -1,4 +1,4 @@
-namespace ASP_API.Areas.HelpPage.ModelDescriptions
+namespace ArsipAPI.Areas.HelpPage.ModelDescriptions
 {
     public class CollectionModelDescription : ModelDescription
     {

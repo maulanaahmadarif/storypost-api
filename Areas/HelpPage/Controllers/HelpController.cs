@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using ASP_API.Areas.HelpPage.ModelDescriptions;
-using ASP_API.Areas.HelpPage.Models;
+using ArsipAPI.Areas.HelpPage.ModelDescriptions;
+using ArsipAPI.Areas.HelpPage.Models;
 
-namespace ASP_API.Areas.HelpPage.Controllers
+namespace ArsipAPI.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using ASP_API.Areas.HelpPage.ModelDescriptions;
+using ArsipAPI.Areas.HelpPage.ModelDescriptions;
 
-namespace ASP_API.Areas.HelpPage.Models
+namespace ArsipAPI.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

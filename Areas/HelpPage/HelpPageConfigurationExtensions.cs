@@ -11,10 +11,10 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using ASP_API.Areas.HelpPage.ModelDescriptions;
-using ASP_API.Areas.HelpPage.Models;
+using ArsipAPI.Areas.HelpPage.ModelDescriptions;
+using ArsipAPI.Areas.HelpPage.Models;
 
-namespace ASP_API.Areas.HelpPage
+namespace ArsipAPI.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

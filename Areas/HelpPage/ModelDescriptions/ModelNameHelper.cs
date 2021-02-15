@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace ASP_API.Areas.HelpPage.ModelDescriptions
+namespace ArsipAPI.Areas.HelpPage.ModelDescriptions
 {
     internal static class ModelNameHelper
     {
