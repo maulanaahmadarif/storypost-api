@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Security.Principal;
 
-namespace SmartSoft.Common
+namespace ASP_API.Common
 {
     public class UserPrincipal : IPrincipal
     {

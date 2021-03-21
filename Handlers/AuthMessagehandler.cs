@@ -5,17 +5,16 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Web;
-using SmartSoft.Common;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SmartsoftAPI.Models;
 using Newtonsoft.Json;
 using ASP_API.AccessData;
 using EnCryptDecrypt;
+using ASP_API.Common;
 
-namespace SmartsoftAPI.Handlers
+namespace ASP_API.Handlers
 {
     public class AuthMessagehandler : DelegatingHandler
     {
@@ -39,7 +38,7 @@ namespace SmartsoftAPI.Handlers
                 Thread.CurrentPrincipal = new UserPrincipal(_username, _accesskey, _satkerid, _ukid, _tiket, _userjob);
                 HttpContext.Current.User = new UserPrincipal(_username, _accesskey, _satkerid, _ukid, _tiket, _userjob);
             }
-                        
+
             //Execute base.SendAsync to execute default actions and once it is completed, 
             //capture the response object and add WWW-Authenticate header if the request was marked as unauthorized.
             return base.SendAsync(request, cancellationToken)
@@ -56,7 +55,7 @@ namespace SmartsoftAPI.Handlers
         }
 
 
-        static public void SetAuthorize(string username, string acceskey, string satkerid, 
+        static public void SetAuthorize(string username, string acceskey, string satkerid,
             string ukid, string tiket, string userjob)
         {
             Thread.CurrentPrincipal = new UserPrincipal(username, acceskey, satkerid, ukid, tiket, userjob);
