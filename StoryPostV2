@@ -1,0 +1,344 @@
+-- DROP SCHEMA dbo;
+
+CREATE SCHEMA dbo;
+-- StoryPostV2.dbo.DynamicPage definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.DynamicPage GO
+
+CREATE TABLE StoryPostV2.dbo.DynamicPage (
+	id bigint IDENTITY(1,1) NOT NULL,
+	title nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	content text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime NULL,
+	updated_at datetime NULL,
+	deleted_at datetime NULL,
+	[type] varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ordering] int NULL,
+	CONSTRAINT PK__DynamicP__3213E83F9BE586D8 PRIMARY KEY (id)
+) GO;
+
+
+-- StoryPostV2.dbo.Feedback definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.Feedback GO
+
+CREATE TABLE StoryPostV2.dbo.Feedback (
+	id bigint IDENTITY(1,1) NOT NULL,
+	subject nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	message text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime NULL,
+	CONSTRAINT PK__Feedback__3213E83F2BEC115D PRIMARY KEY (id)
+) GO;
+
+
+-- StoryPostV2.dbo.PostCategory definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.PostCategory GO
+
+CREATE TABLE StoryPostV2.dbo.PostCategory (
+	id bigint IDENTITY(1,1) NOT NULL,
+	slug nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Name text COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	IsReported int NOT NULL,
+	CreatedAt datetime NOT NULL,
+	DeletedAt datetime NULL,
+	uid varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CONSTRAINT PK__PostCate__3213E83F3B28367B PRIMARY KEY (id)
+) GO
+ CREATE  UNIQUE NONCLUSTERED INDEX PostCategory_index_3 ON dbo.PostCategory (  slug ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO
+ CREATE NONCLUSTERED INDEX post_category_index ON dbo.PostCategory (  id ASC  , slug ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
+-- StoryPostV2.dbo.TagData definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.TagData GO
+
+CREATE TABLE StoryPostV2.dbo.TagData (
+	id bigint IDENTITY(1,1) NOT NULL,
+	tagName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__TagData__3213E83FA0E5E86B PRIMARY KEY (id)
+) GO;
+
+
+-- StoryPostV2.dbo.UserRole definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.UserRole GO
+
+CREATE TABLE StoryPostV2.dbo.UserRole (
+	id bigint IDENTITY(1,1) NOT NULL,
+	role_name text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	deleted_at datetime NULL,
+	CONSTRAINT PK__UserRole__3213E83F5E290501 PRIMARY KEY (id)
+) GO;
+
+
+-- StoryPostV2.dbo.[__EFMigrationsHistory] definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.[__EFMigrationsHistory] GO
+
+CREATE TABLE StoryPostV2.dbo.[__EFMigrationsHistory] (
+	MigrationId nvarchar(150) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	ProductVersion nvarchar(32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CONSTRAINT PK___EFMigrationsHistory PRIMARY KEY (MigrationId)
+) GO;
+
+
+-- StoryPostV2.dbo.EventPost definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.EventPost GO
+
+CREATE TABLE StoryPostV2.dbo.EventPost (
+	id bigint IDENTITY(1,1) NOT NULL,
+	post_category_id bigint NULL,
+	title nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	description text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	startDate datetime NULL,
+	endDate datetime NULL,
+	prizePool text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	winner bigint NULL,
+	created_at datetime NULL,
+	updated_at datetime NULL,
+	deleted_at datetime NULL,
+	CONSTRAINT PK__EventPos__3213E83F17F3BA5E PRIMARY KEY (id),
+	CONSTRAINT FK__EventPost__post___00AA174D FOREIGN KEY (post_category_id) REFERENCES StoryPostV2.dbo.PostCategory(id)
+) GO;
+
+
+-- StoryPostV2.dbo.ListMenu definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.ListMenu GO
+
+CREATE TABLE StoryPostV2.dbo.ListMenu (
+	id bigint IDENTITY(1,1) NOT NULL,
+	menu_name text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	user_role_id bigint NULL,
+	deleted_at datetime NULL,
+	CONSTRAINT PK__ListMenu__3213E83FD00C5C2B PRIMARY KEY (id),
+	CONSTRAINT FK__ListMenu__user_r__74794A92 FOREIGN KEY (user_role_id) REFERENCES StoryPostV2.dbo.UserRole(id)
+) GO
+ CREATE NONCLUSTERED INDEX list_menu_index ON dbo.ListMenu (  id ASC  , user_role_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
+-- StoryPostV2.dbo.Users definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.Users GO
+
+CREATE TABLE StoryPostV2.dbo.Users (
+	Id bigint IDENTITY(1,1) NOT NULL,
+	Username nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Password varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Name varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Phone varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Facebook varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Twitter varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Instagram varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Picture varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Email varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	NIP nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Account nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	status nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CreatedAt datetime NULL,
+	UpdatedAt datetime NULL,
+	DeletedAt datetime NULL,
+	Confirmed int NULL,
+	Secretcode nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	IsBanned int NULL,
+	IsDownload int NULL,
+	IsEmailBanned int NULL,
+	RoleId bigint NULL,
+	CONSTRAINT PK__Users__3214EC07768BDC8C PRIMARY KEY (Id),
+	CONSTRAINT FK__Users__role_id__7D0E9093 FOREIGN KEY (RoleId) REFERENCES StoryPostV2.dbo.UserRole(id)
+) GO
+ CREATE NONCLUSTERED INDEX user_index ON dbo.Users (  Id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
+-- StoryPostV2.dbo.PostData definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.PostData GO
+
+CREATE TABLE StoryPostV2.dbo.PostData (
+	id bigint IDENTITY(1,1) NOT NULL,
+	user_id bigint NOT NULL,
+	post_category_id bigint NOT NULL,
+	location text COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	caption text COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	created_at datetime NOT NULL,
+	updated_at datetime NULL,
+	deleted_at datetime NULL,
+	uid varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	title text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	isEvent int NULL,
+	weekly_id bigint NULL,
+	CONSTRAINT PK__PostData__3213E83FF177FBC0 PRIMARY KEY (id),
+	CONSTRAINT FK__PostData__post_c__756D6ECB FOREIGN KEY (post_category_id) REFERENCES StoryPostV2.dbo.PostCategory(id),
+	CONSTRAINT FK__PostData__user_i__3FD07829 FOREIGN KEY (user_id) REFERENCES StoryPostV2.dbo.Users(Id)
+) GO;
+
+
+-- StoryPostV2.dbo.PostImage definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.PostImage GO
+
+CREATE TABLE StoryPostV2.dbo.PostImage (
+	id bigint IDENTITY(1,1) NOT NULL,
+	post_data_id bigint NULL,
+	[path] text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime NULL,
+	deleted_at datetime NULL,
+	[type] bigint NULL,
+	CONSTRAINT PK__PostImag__3213E83F536E6224 PRIMARY KEY (id),
+	CONSTRAINT FK__PostImage__post___76619304 FOREIGN KEY (post_data_id) REFERENCES StoryPostV2.dbo.PostData(id)
+) GO
+ CREATE NONCLUSTERED INDEX post_image_index ON dbo.PostImage (  id ASC  , post_data_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
+-- StoryPostV2.dbo.PostLike definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.PostLike GO
+
+CREATE TABLE StoryPostV2.dbo.PostLike (
+	id bigint IDENTITY(1,1) NOT NULL,
+	user_id bigint NULL,
+	post_data_id bigint NULL,
+	created_at datetime NULL,
+	deleted_at datetime NULL,
+	CONSTRAINT PK__PostLike__3213E83F37109122 PRIMARY KEY (id),
+	CONSTRAINT FK__PostLike__post_d__7849DB76 FOREIGN KEY (post_data_id) REFERENCES StoryPostV2.dbo.PostData(id),
+	CONSTRAINT FK__PostLike__user_d FOREIGN KEY (user_id) REFERENCES StoryPostV2.dbo.Users(Id)
+) GO;
+
+
+-- StoryPostV2.dbo.PostReports definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.PostReports GO
+
+CREATE TABLE StoryPostV2.dbo.PostReports (
+	id bigint IDENTITY(1,1) NOT NULL,
+	post_data_id bigint NULL,
+	user_id bigint NULL,
+	reason text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	created_at datetime NULL,
+	status_desc nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	isDecline int NULL,
+	isRemove int NULL,
+	isEmailed int NULL,
+	CONSTRAINT PK__PostRepo__3213E83FE322DFEE PRIMARY KEY (id),
+	CONSTRAINT FK__PostRepor__post___7B264821 FOREIGN KEY (post_data_id) REFERENCES StoryPostV2.dbo.PostData(id),
+	CONSTRAINT FK__PostRepor__user___68D28DBC FOREIGN KEY (user_id) REFERENCES StoryPostV2.dbo.Users(Id)
+) GO;
+
+
+-- StoryPostV2.dbo.PostTag definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.PostTag GO
+
+CREATE TABLE StoryPostV2.dbo.PostTag (
+	id bigint IDENTITY(1,1) NOT NULL,
+	post_data_id bigint NULL,
+	tag_data_id bigint NOT NULL,
+	CONSTRAINT PK__PostTag__3213E83FA0E5E86B PRIMARY KEY (id),
+	CONSTRAINT FK__PostTag__post_da__7755B73D FOREIGN KEY (post_data_id) REFERENCES StoryPostV2.dbo.PostData(id),
+	CONSTRAINT FK__PostTag__tag_dat__42ACE4D4 FOREIGN KEY (tag_data_id) REFERENCES StoryPostV2.dbo.TagData(id)
+) GO
+ CREATE NONCLUSTERED INDEX post_tag_index ON dbo.PostTag (  id ASC  , post_data_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
+-- StoryPostV2.dbo.UserAcitivity definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.UserAcitivity GO
+
+CREATE TABLE StoryPostV2.dbo.UserAcitivity (
+	id bigint IDENTITY(1,1) NOT NULL,
+	user_id bigint NULL,
+	last_login datetime NULL,
+	CONSTRAINT PK__UserAcit__3213E83F177C031E PRIMARY KEY (id),
+	CONSTRAINT FK__UserAciti__user___793DFFAF FOREIGN KEY (user_id) REFERENCES StoryPostV2.dbo.Users(Id)
+) GO
+ CREATE NONCLUSTERED INDEX user_activity_index ON dbo.UserAcitivity (  id ASC  , user_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
+-- StoryPostV2.dbo.EventPostDetail definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.EventPostDetail GO
+
+CREATE TABLE StoryPostV2.dbo.EventPostDetail (
+	id bigint IDENTITY(1,1) NOT NULL,
+	event_post_id bigint NULL,
+	post_data_id bigint NULL,
+	CONSTRAINT PK__EventPos__3213E83F75BD2D6A PRIMARY KEY (id),
+	CONSTRAINT FK__EventPost__event__7EC1CEDB FOREIGN KEY (event_post_id) REFERENCES StoryPostV2.dbo.EventPost(id),
+	CONSTRAINT FK__EventPost__post___7FB5F314 FOREIGN KEY (post_data_id) REFERENCES StoryPostV2.dbo.PostData(id)
+) GO;
+
+
+-- StoryPostV2.dbo.Notifications definition
+
+-- Drop table
+
+-- DROP TABLE StoryPostV2.dbo.Notifications GO
+
+CREATE TABLE StoryPostV2.dbo.Notifications (
+	id bigint IDENTITY(1,1) NOT NULL,
+	user_id bigint NULL,
+	post_data_id bigint NULL,
+	from_id bigint NULL,
+	[type] int NULL,
+	thumbnail text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Viewed int NULL,
+	created_at datetime NULL,
+	updated_at datetime NULL,
+	CONSTRAINT PK__Notifica__3213E83F5F2E5540 PRIMARY KEY (id),
+	CONSTRAINT FK__Notificat__post___7C1A6C5A FOREIGN KEY (post_data_id) REFERENCES StoryPostV2.dbo.PostData(id),
+	CONSTRAINT FK__Notificat__user___7A3223E8 FOREIGN KEY (user_id) REFERENCES StoryPostV2.dbo.Users(Id)
+) GO
+ CREATE NONCLUSTERED INDEX notif_index ON dbo.Notifications (  id ASC  , user_id ASC  , post_data_id ASC  , from_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ]  GO;
+
+
