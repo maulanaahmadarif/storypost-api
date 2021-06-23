@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using geckserver.Configuration;
@@ -57,9 +58,10 @@ namespace geckserver.Controllers
                         Message = "Email already used"
                     });
                 }
-
+                
+                string decryptPass = new HashingData().DecryptStringAES(user.Password);
                 var hashing = new HashingManager();
-                var hash = hashing.HashToString(user.Password);
+                var hash = hashing.HashToString(decryptPass);
                 user.Password = hash;
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
