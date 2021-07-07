@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -146,6 +147,108 @@ namespace geckserver.Controllers
                     {
                         Status = false,
                         Message = "Invalid Password"
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = e.Message
+                });
+            }
+        }
+
+        [HttpPost("getToken")]
+        public async Task<ActionResult<AuthResult>> getToken([FromBody] GetTokenDto body)
+        {
+            try
+            {
+                // body.account value is email
+                string decryptAccount = new HashingData().DecryptStringAES(body.account);
+
+                // checked email
+                var userData = await _context.Users.Where(e => e.Email == decryptAccount).FirstOrDefaultAsync();
+                if (userData != null)
+                {
+                    // register
+                    using var transaction = _context.Database.BeginTransaction();
+                    try
+                    {
+                        var hashing = new HashingManager();
+                        var hashPassword = hashing.HashToString(decryptAccount);
+
+                        var user = new User();
+                        user.Username = decryptAccount;
+                        user.Password = hashPassword;
+                        user.Name = decryptAccount;
+                        user.Email = decryptAccount;
+                        user.Status = "1";
+                        user.RoleId = 1;
+                        user.CreatedAt = DateTime.Now;
+
+                        _context.Users.Add(user);
+                        await _context.SaveChangesAsync();
+
+                        transaction.Commit();
+
+                        var token = GenerateJwtToken(user);
+
+                        var userProfile = new UserProfileDTO()
+                        {
+                            Username = user.Username,
+                            Name = user.Name,
+                            Phone = user.Phone,
+                            Facebook = user.Facebook,
+                            Twitter = user.Twitter,
+                            Instagram = user.Instagram,
+                            Picture = user.Picture,
+                            Email = user.Email,
+                            Nip = user.Nip,
+                            RoleId = user.RoleId.ToString()
+                        };
+
+                        return Ok(new AuthResult()
+                        {
+                            Success = true,
+                            Token = token,
+                            Profile = userProfile,
+                        });
+                    }
+                    catch (Exception err)
+                    {
+                        transaction.Rollback();
+                        return BadRequest(new Response()
+                        {
+                            Status = false,
+                            Message = err.Message
+                        });
+                    }
+                } 
+                else 
+                {
+                    var token = GenerateJwtToken(userData);
+
+                    var userProfile = new UserProfileDTO()
+                    {
+                        Username = userData.Username,
+                        Name = userData.Name,
+                        Phone = userData.Phone,
+                        Facebook = userData.Facebook,
+                        Twitter = userData.Twitter,
+                        Instagram = userData.Instagram,
+                        Picture = userData.Picture,
+                        Email = userData.Email,
+                        Nip = userData.Nip,
+                        RoleId = userData.RoleId.ToString()
+                    };
+
+                    return Ok(new AuthResult()
+                    {
+                        Success = true,
+                        Token = token,
+                        Profile = userProfile,
                     });
                 }
             }
